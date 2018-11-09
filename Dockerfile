@@ -1,4 +1,4 @@
-FROM python:3-stretch
+FROM python:3-slim-stretch
 
 LABEL maintainer "Seth Grover <sethdgrover@gmail.com>"
 
@@ -7,7 +7,7 @@ ENV DEBIAN_FRONTEND noninteractive
 ADD profanity_filter.patch /tmp/profanity_filter.patch
 
 RUN apt-get update && \
-    apt-get install --no-install-recommends -y libhunspell-dev curl xvfb imagemagick && \
+    apt-get install --no-install-recommends -y libhunspell-dev curl xvfb imagemagick git build-essential && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/* && \
     pip install -r https://raw.githubusercontent.com/rominf/profanity-filter/master/requirements-deep-analysis.txt && \
