@@ -7,12 +7,12 @@ ENV DEBIAN_FRONTEND noninteractive
 ADD profanity_filter.patch /tmp/profanity_filter.patch
 
 RUN apt-get update && \
-    apt-get install --no-install-recommends -y libhunspell-dev curl xvfb imagemagick git build-essential && \
+    apt-get install --no-install-recommends -y libhunspell-dev curl xvfb libmagic1 imagemagick git build-essential && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/* && \
     pip install -r https://raw.githubusercontent.com/rominf/profanity-filter/master/requirements-deep-analysis.txt && \
     pip install profanity-filter && \
-    pip install pyunpack entrypoint2 patool && \
+    pip install pyunpack entrypoint2 patool filemagic ebooklib && \
     python -m spacy download en && \
     cd /usr/local/lib/python3.7/site-packages/profanity_filter && \
     bash -c "patch -p0 < /tmp/profanity_filter.patch" && \
