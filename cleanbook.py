@@ -16,6 +16,7 @@ def main():
   requiredNamed = parser.add_argument_group('required arguments')
   requiredNamed.add_argument('-i', '--input', required=True, dest='input', metavar='<STR>', type=str, nargs=1, default='', help='Input file')
   parser.add_argument('-l', '--languages', dest='languages', metavar='<STR>', type=str, nargs=1, default='en', help='Test for profanity using specified languages (comma separated, default: en)')
+  parser.add_argument('-w', '--whole-words', dest='censor_whole_words', action='store_true', help='Censor whole words (default: false)')
   try:
     parser.error = parser.exit
     args = parser.parse_args()
@@ -24,6 +25,7 @@ def main():
     exit(2)
 
   pf = ProfanityFilter(languages=args.languages.split(','))
-  print(pf.censor("Those bastards!"))
+  pf.censor_whole_words = args.censor_whole_words
+  print(pf.censor("Those ooobastardsooo!"))
 
 if __name__ == '__main__': main()
