@@ -7,7 +7,7 @@ ENV DEBIAN_FRONTEND noninteractive
 ADD profanity_filter.patch /tmp/profanity_filter.patch
 
 RUN apt-get update && \
-    apt-get install -y libhunspell-dev curl && \
+    apt-get install --no-install-recommends -y libhunspell-dev curl xvfb imagemagick && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/* && \
     pip install -r https://raw.githubusercontent.com/rominf/profanity-filter/master/requirements-deep-analysis.txt && \
@@ -17,7 +17,8 @@ RUN apt-get update && \
     cd /usr/local/lib/python3.7/site-packages/profanity_filter && \
     bash -c "patch -p0 < /tmp/profanity_filter.patch" && \
     rm -f /tmp/profanity_filter.patch && \
-    chmod +x /usr/local/lib/python3.7/site-packages/profanity_filter/console.py
+    chmod +x /usr/local/lib/python3.7/site-packages/profanity_filter/console.py && \
+    bash -c 'curl https://raw.githubusercontent.com/kovidgoyal/calibre/master/setup/linux-installer.py | python -c "import sys; main=lambda:sys.stderr.write(\"Download failed\n\"); exec(sys.stdin.read()); main()"'
 
 ADD en_profane_words.txt /usr/local/lib/python3.7/site-packages/profanity_filter/data/
 ADD https://cgit.freedesktop.org/libreoffice/dictionaries/plain/en/en_US.aff /usr/local/lib/python3.7/site-packages/profanity_filter/data/en.aff
