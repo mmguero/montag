@@ -23,5 +23,5 @@ ADD en_profane_words.txt /usr/local/lib/python3.7/site-packages/profanity_filter
 ADD https://cgit.freedesktop.org/libreoffice/dictionaries/plain/en/en_US.aff /usr/local/lib/python3.7/site-packages/profanity_filter/data/en.aff
 ADD https://cgit.freedesktop.org/libreoffice/dictionaries/plain/en/en_US.dic /usr/local/lib/python3.7/site-packages/profanity_filter/data/en.dic
 
-ENTRYPOINT ["/usr/local/lib/python3.7/site-packages/profanity_filter/console.py"]
+ENTRYPOINT ["python", "/usr/local/lib/python3.7/site-packages/profanity_filter/console.py"]
 CMD []
