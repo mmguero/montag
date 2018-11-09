@@ -1,0 +1,3 @@
+git+https://github.com/rominf/pyffs
+git+https://github.com/rominf/hunspell_serializable.git
+profanity-filter[deep-analysis]
