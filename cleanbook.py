@@ -12,8 +12,6 @@ from profanity_filter import ProfanityFilter
 
 def main():
 
-  # extract arguments from the command line
-  # print (sys.argv[1:]);
   parser = argparse.ArgumentParser(description='e-book profanity scrubber', add_help=False, usage='cleanbook.py [options]')
   requiredNamed = parser.add_argument_group('required arguments')
   requiredNamed.add_argument('-i', '--input', required=True, dest='input', metavar='<STR>', type=str, nargs=1, default='', help='Input file')
@@ -26,5 +24,6 @@ def main():
     exit(2)
 
   pf = ProfanityFilter(languages=args.languages.split(','))
+  print(pf.censor("Those bastards!"))
 
 if __name__ == '__main__': main()
