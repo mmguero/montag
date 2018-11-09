@@ -21,8 +21,9 @@ RUN apt-get update && \
     bash -c 'curl https://raw.githubusercontent.com/kovidgoyal/calibre/master/setup/linux-installer.py | python -c "import sys; main=lambda:sys.stderr.write(\"Download failed\n\"); exec(sys.stdin.read()); main()"'
 
 ADD en_profane_words.txt /usr/local/lib/python3.7/site-packages/profanity_filter/data/
+ADD cleanbook.py /usr/local/bin/cleanbook.py
 ADD https://cgit.freedesktop.org/libreoffice/dictionaries/plain/en/en_US.aff /usr/local/lib/python3.7/site-packages/profanity_filter/data/en.aff
 ADD https://cgit.freedesktop.org/libreoffice/dictionaries/plain/en/en_US.dic /usr/local/lib/python3.7/site-packages/profanity_filter/data/en.dic
 
-ENTRYPOINT ["python", "/usr/local/lib/python3.7/site-packages/profanity_filter/console.py"]
+ENTRYPOINT ["python3", "/usr/local/bin/cleanbook.py"]
 CMD []
