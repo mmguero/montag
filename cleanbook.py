@@ -3,11 +3,13 @@
 
 import sys
 import os
+import copy
 import signal
 import struct
 import re
 import argparse
 import ebooklib
+from ebooklib import epub
 from subprocess import call
 import pprint
 import magic
@@ -48,29 +50,46 @@ def main():
   if (metadataExitCode != 0):
     raise CalledProcessError(metadataExitCode, f"/usr/bin/ebook-meta --to-opf={METADATA_FILESPEC} {args.input}")
 
-  # convert the book from whatever format it is into RTF for conversion
-  if "rich text format" in bookMagic.lower():
-    rtfFileSpec = args.input
-    wasRtf = True
+  # convert the book from whatever format it is into epub for conversion
+  if "epub" in bookMagic.lower():
+    epubFileSpec = args.input
+    wasEpub = True
   else:
-    wasRtf = False
-    rtfFileSpec = "/tmp/ebook.rtf"
-    eprint(f"Converting to Rich Text Format...")
-    toRtfExitCode = call(["/usr/bin/ebook-convert", args.input, rtfFileSpec], stdout=devnull, stderr=devnull)
-    if (toRtfExitCode != 0):
-      raise CalledProcessError(toRtfExitCode, f"/usr/bin/ebook-convert {METADATA_FILESPEC} {args.input}")
+    wasEpub = False
+    epubFileSpec = "/tmp/ebook.epub"
+    eprint(f"Converting to EPUB...")
+    toEpubExitCode = call(["/usr/bin/ebook-convert", args.input, epubFileSpec], stdout=devnull, stderr=devnull)
+    if (toEpubExitCode != 0):
+      raise CalledProcessError(toEpubExitCode, f"/usr/bin/ebook-convert {args.input} {epubFileSpec}")
 
-  bookLinesCleaned = []
-  with open(rtfFileSpec, "r", encoding="latin-1") as f:
-    eprint("Processing text...")
-    for line in f.readlines():
-      try:
-        censoredLine = pf.censor(line)
-      except BaseException as error:
-        eprint(f"Got error \"{format(error)}\" censoring [{line}], it will not be censored!")
-        censoredLine = line
-      bookLinesCleaned.append(censoredLine)
+  book = epub.read_epub(epubFileSpec)
+  newBook = epub.EpubBook()
+  newBook.spine = ['nav']
+  for item in book.get_items():
+    if item.get_type() == ebooklib.ITEM_DOCUMENT:
+      newContent = copy.deepcopy(item.get_content().decode("latin-1").split("\n"))
+      newItem = copy.deepcopy(item)
+      newItem.set_content(newContent)
+      newBook.add_item(newItem)
+      newBook.spine.append(newItem)
+    else:
+      newBook.add_item(item)
 
-  pprint.pprint(bookLinesCleaned)
+  book.add_item(epub.EpubNcx())
+  book.add_item(epub.EpubNav())
+  epub.write_epub('output.epub', newBook)
+
+  # bookLinesCleaned = []
+  # with open(rtfFileSpec, "r", encoding="latin-1") as f:
+  #   eprint("Processing text...")
+  #   for line in f.readlines():
+  #     try:
+  #       censoredLine = pf.censor(line)
+  #     except BaseException as error:
+  #       eprint(f"Got error \"{format(error)}\" censoring [{line}], it will not be censored!")
+  #       censoredLine = line
+  #     bookLinesCleaned.append(censoredLine)
+
+  # pprint.pprint(bookLinesCleaned)
 
 if __name__ == '__main__': main()
