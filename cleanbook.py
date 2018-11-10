@@ -89,17 +89,4 @@ def main():
   book.add_item(epub.EpubNav())
   epub.write_epub(args.output, newBook)
 
-  # bookLinesCleaned = []
-  # with open(rtfFileSpec, "r", encoding="latin-1") as f:
-  #   eprint("Processing text...")
-  #   for line in f.readlines():
-  #     try:
-  #       censoredLine = pf.censor(line)
-  #     except BaseException as error:
-  #       eprint(f"Got error \"{format(error)}\" censoring [{line}], it will not be censored!")
-  #       censoredLine = line
-  #     bookLinesCleaned.append(censoredLine)
-
-  # pprint.pprint(bookLinesCleaned)
-
 if __name__ == '__main__': main()
