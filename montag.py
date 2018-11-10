@@ -22,7 +22,7 @@ METADATA_FILESPEC = "/tmp/metadata.opf"
 def main():
   devnull = open(os.devnull, 'w')
 
-  parser = argparse.ArgumentParser(description='e-book profanity scrubber', add_help=False, usage='cleanbook.py [options]')
+  parser = argparse.ArgumentParser(description='e-book profanity scrubber', add_help=False, usage='montag.py [options]')
   requiredNamed = parser.add_argument_group('required arguments')
   requiredNamed.add_argument('-i', '--input', required=True, dest='input', metavar='<STR>', type=str, default='', help='Input file')
   requiredNamed.add_argument('-o', '--output', required=True, dest='output', metavar='<STR>', type=str, default='', help='Output file')
@@ -64,6 +64,8 @@ def main():
     if (toEpubExitCode != 0):
       raise subprocess.CalledProcessError(toEpubExitCode, f"/usr/bin/ebook-convert {args.input} {epubFileSpec}")
 
+  # todo: somehow links/TOCs tend to get messed up
+
   eprint(f"Processing book contents...")
   book = epub.read_epub(epubFileSpec)
   newBook = epub.EpubBook()
@@ -73,11 +75,12 @@ def main():
       cleanLines = []
       dirtyLines = item.get_content().decode("latin-1").split("\n")
       for line in dirtyLines:
-        try:
-          censoredLine = pf.censor(line)
-        except BaseException as error:
-          eprint(f"Got error \"{format(error)}\" censoring [{line}], it will not be censored!")
-          censoredLine = line
+        #try:
+        # todo: determine if line is entirely made up of an html tag (no "text") and don't try to censor it
+        censoredLine = pf.censor(line)
+        #except BaseException as error:
+        #  eprint(f"Got error \"{format(error)}\" censoring [{line}], it will not be censored!")
+        #  censoredLine = line
         cleanLines.append(censoredLine)
       item.set_content("\n".join(cleanLines).encode("latin-1"))
       newBook.spine.append(item)

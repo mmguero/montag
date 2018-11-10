@@ -15,10 +15,10 @@ RUN apt-get update && \
     cd /usr/local/lib/python3.7/site-packages/profanity_filter && \
     bash -c 'curl https://raw.githubusercontent.com/kovidgoyal/calibre/master/setup/linux-installer.py | python -c "import sys; main=lambda:sys.stderr.write(\"Download failed\n\"); exec(sys.stdin.read()); main()"'
 
-ADD cleanbook.py /usr/local/bin/cleanbook.py
+ADD montag.py /usr/local/bin/montag.py
 ADD en_profane_words.txt /usr/local/lib/python3.7/site-packages/profanity_filter/data/
 ADD https://cgit.freedesktop.org/libreoffice/dictionaries/plain/en/en_US.aff /usr/local/lib/python3.7/site-packages/profanity_filter/data/en.aff
 ADD https://cgit.freedesktop.org/libreoffice/dictionaries/plain/en/en_US.dic /usr/local/lib/python3.7/site-packages/profanity_filter/data/en.dic
 
-ENTRYPOINT ["python3", "/usr/local/bin/cleanbook.py"]
+ENTRYPOINT ["python3", "/usr/local/bin/montag.py"]
 CMD []
