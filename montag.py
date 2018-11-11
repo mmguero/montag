@@ -8,8 +8,8 @@ import argparse
 import pprint
 import subprocess
 import magic
-import BeautifulSoup
 import ebooklib
+from ebooklib import epub
 from profanity_filter import ProfanityFilter
 
 def eprint(*args, **kwargs):
@@ -67,28 +67,27 @@ def main():
   tagRegEx = re.compile(r'^\s*<.*[/\?][\w-]*>\s*$')
 
   eprint(f"Processing book contents...")
-  book = ebooklib.epub.read_epub(epubFileSpec)
-  newBook = ebooklib.epub.EpubBook()
+  book = epub.read_epub(epubFileSpec)
+  newBook = epub.EpubBook()
   newBook.spine = ['nav']
   for item in book.get_items():
     if item.get_type() == ebooklib.ITEM_DOCUMENT:
-      cleanLines = []
-      dirtyLines = item.get_content().decode("latin-1").split("\n")
-      for line in dirtyLines:
-        if (len(line) == 0) or ((tagRegEx.match(line) is not None) and (line.count('<') == 1) and (line.count('>') == 1)):
-          eprint(f"skipping {line}")
-          censoredLine = line
+      cleanTokens = []
+      tokens = re.split(r'(\W)', item.get_content().decode("latin-1"))
+      for token in tokens:
+        if token.isalpha() and (len(token) > 2): # only censor alpha-words > 2 characters
+          censoredToken = pf.censor(token)
         else:
-          censoredLine = pf.censor(line)
-        cleanLines.append(censoredLine)
-      item.set_content("\n".join(cleanLines).encode("latin-1"))
+          censoredToken = token
+        cleanTokens.append(censoredToken)
+      item.set_content(''.join(cleanTokens).encode("latin-1"))
       newBook.spine.append(item)
       newBook.add_item(item)
     else:
       newBook.add_item(item)
 
-  book.add_item(ebooklib.epub.EpubNcx())
-  book.add_item(ebooklib.epub.EpubNav())
-  ebooklib.epub.write_epub(args.output, newBook)
+  book.add_item(epub.EpubNcx())
+  book.add_item(epub.EpubNav())
+  epub.write_epub(args.output, newBook)
 
 if __name__ == '__main__': main()
