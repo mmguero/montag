@@ -63,6 +63,20 @@ def main():
 
   # todo: somehow links/TOCs tend to get messed up
 
+# With look-ahead / look-behind assertions with re.findall:
+
+# import re
+
+# pattern = re.compile("(<.*(?<=>))(.*)((?=</)[^>]*>)")
+# print re.findall(pattern, line)
+# # [('<label>', 'Olympic Games', '</label>'), ('<title>', 'Next stop', '</title>')]
+
+# Without look-ahead / look-behind assertions, just by capturing groups, with re.findall:
+
+# pattern = re.compile("(<[^>]*>)(.*)(</[^>]*>)")
+# print re.findall(pattern, line)
+# # [('<label>', 'Olympic Games', '</label>'), ('<title>', 'Next stop', '</title>')
+
   # skip line that are JUST html tags, see use of tagRegEx, kind of cludgy
   tagRegEx = re.compile(r'^\s*<.*[/\?][\w-]*>\s*$')
 
@@ -73,12 +87,15 @@ def main():
   for item in book.get_items():
     if item.get_type() == ebooklib.ITEM_DOCUMENT:
       cleanTokens = []
-      tokens = re.split(r'(\W)', item.get_content().decode("latin-1"))
+      # tokens = re.split(r'(\W)', item.get_content().decode("latin-1"))
+      tokens = re.split(r'(?<=>)(.+?)(?=<)', item.get_content().decode("latin-1"), re.DOTALL|re.MULTILINE)
+      # pprint.pprint(tokens)
       for token in tokens:
-        if token.isalpha() and (len(token) > 2): # only censor alpha-words > 2 characters
-          censoredToken = pf.censor(token)
-        else:
-          censoredToken = token
+        censoredToken = pf.censor(token)
+        #if token.isalpha() and (len(token) > 2): # only censor alpha-words > 2 characters
+          #censoredToken = pf.censor(token)
+        #else:
+          #censoredToken = token
         cleanTokens.append(censoredToken)
       item.set_content(''.join(cleanTokens).encode("latin-1"))
       newBook.spine.append(item)
