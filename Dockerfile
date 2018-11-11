@@ -10,7 +10,7 @@ RUN apt-get update && \
     rm -rf /var/lib/apt/lists/* && \
     pip install -r https://raw.githubusercontent.com/mmguero/profanity-filter/master/requirements-deep-analysis.txt && \
     pip install git+https://github.com/mmguero/profanity-filter && \
-    pip install pyunpack entrypoint2 patool filemagic ebooklib && \
+    pip install pyunpack entrypoint2 patool filemagic ebooklib beautifulsoup4 && \
     python -m spacy download en && \
     cd /usr/local/lib/python3.7/site-packages/profanity_filter && \
     bash -c 'curl https://raw.githubusercontent.com/kovidgoyal/calibre/master/setup/linux-installer.py | python -c "import sys; main=lambda:sys.stderr.write(\"Download failed\n\"); exec(sys.stdin.read()); main()"'

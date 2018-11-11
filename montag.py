@@ -3,16 +3,13 @@
 
 import sys
 import os
-import copy
-import signal
-import struct
 import re
 import argparse
-import ebooklib
-from ebooklib import epub
-import subprocess
 import pprint
+import subprocess
 import magic
+import BeautifulSoup
+import ebooklib
 from profanity_filter import ProfanityFilter
 
 def eprint(*args, **kwargs):
@@ -70,8 +67,8 @@ def main():
   tagRegEx = re.compile(r'^\s*<.*[/\?][\w-]*>\s*$')
 
   eprint(f"Processing book contents...")
-  book = epub.read_epub(epubFileSpec)
-  newBook = epub.EpubBook()
+  book = ebooklib.epub.read_epub(epubFileSpec)
+  newBook = ebooklib.epub.EpubBook()
   newBook.spine = ['nav']
   for item in book.get_items():
     if item.get_type() == ebooklib.ITEM_DOCUMENT:
@@ -90,8 +87,8 @@ def main():
     else:
       newBook.add_item(item)
 
-  book.add_item(epub.EpubNcx())
-  book.add_item(epub.EpubNav())
-  epub.write_epub(args.output, newBook)
+  book.add_item(ebooklib.epub.EpubNcx())
+  book.add_item(ebooklib.epub.EpubNav())
+  ebooklib.epub.write_epub(args.output, newBook)
 
 if __name__ == '__main__': main()
