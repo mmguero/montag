@@ -66,6 +66,9 @@ def main():
 
   # todo: somehow links/TOCs tend to get messed up
 
+  # skip line that are JUST html tags, see use of tagRegEx, kind of cludgy
+  tagRegEx = re.compile(r'^\s*<.*[/\?][\w-]*>\s*$')
+
   eprint(f"Processing book contents...")
   book = epub.read_epub(epubFileSpec)
   newBook = epub.EpubBook()
@@ -75,12 +78,11 @@ def main():
       cleanLines = []
       dirtyLines = item.get_content().decode("latin-1").split("\n")
       for line in dirtyLines:
-        #try:
-        # todo: determine if line is entirely made up of an html tag (no "text") and don't try to censor it
-        censoredLine = pf.censor(line)
-        #except BaseException as error:
-        #  eprint(f"Got error \"{format(error)}\" censoring [{line}], it will not be censored!")
-        #  censoredLine = line
+        if (len(line) == 0) or ((tagRegEx.match(line) is not None) and (line.count('<') == 1) and (line.count('>') == 1)):
+          eprint(f"skipping {line}")
+          censoredLine = line
+        else:
+          censoredLine = pf.censor(line)
         cleanLines.append(censoredLine)
       item.set_content("\n".join(cleanLines).encode("latin-1"))
       newBook.spine.append(item)
