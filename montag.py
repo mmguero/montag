@@ -96,10 +96,9 @@ def main():
       for token in tagTokenizer(item.get_content().decode("latin-1")):
         trimmedToken = token.strip()
         if (len(trimmedToken) <= 2) or (trimmedToken.startswith('<') and trimmedToken.endswith('>')):
-          censoredToken = token
+          cleanTokens.append(token)
         else:
-          censoredToken = pf.censor(token)
-        cleanTokens.append(censoredToken)
+          cleanTokens.append(pf.censor(token))
       item.set_content(''.join(cleanTokens).encode("latin-1"))
       newBook.spine.append(item)
       newBook.add_item(item)
