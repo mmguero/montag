@@ -3,7 +3,6 @@
 
 import sys
 import os
-import re
 import argparse
 import pprint
 import subprocess
@@ -14,6 +13,30 @@ from profanity_filter import ProfanityFilter
 
 def eprint(*args, **kwargs):
   print(*args, file=sys.stderr, **kwargs)
+
+def tagTokenizer(s):
+  inTag = False
+  tokens = []
+  lastChar = None
+  for i, char in enumerate(s):
+    if inTag and (char == '>') and (lastChar != '\\'):
+      inTag = False
+      tokens.append(char)
+      if (len(tokens) > 0):
+        yield ''.join(tokens)
+      tokens.clear()
+    elif (not inTag) and (char == '<') and (lastChar != '\\'):
+      inTag = True
+      if (len(tokens) > 0):
+        yield ''.join(tokens)
+      tokens.clear()
+      tokens.append(char)
+    else:
+      tokens.append(char)
+    lastChar = char
+
+  if (len(tokens) > 0):
+    yield ''.join(tokens)
 
 METADATA_FILESPEC = "/tmp/metadata.opf"
 def main():
@@ -63,23 +86,6 @@ def main():
 
   # todo: somehow links/TOCs tend to get messed up
 
-# With look-ahead / look-behind assertions with re.findall:
-
-# import re
-
-# pattern = re.compile("(<.*(?<=>))(.*)((?=</)[^>]*>)")
-# print re.findall(pattern, line)
-# # [('<label>', 'Olympic Games', '</label>'), ('<title>', 'Next stop', '</title>')]
-
-# Without look-ahead / look-behind assertions, just by capturing groups, with re.findall:
-
-# pattern = re.compile("(<[^>]*>)(.*)(</[^>]*>)")
-# print re.findall(pattern, line)
-# # [('<label>', 'Olympic Games', '</label>'), ('<title>', 'Next stop', '</title>')
-
-  # skip line that are JUST html tags, see use of tagRegEx, kind of cludgy
-  tagRegEx = re.compile(r'^\s*<.*[/\?][\w-]*>\s*$')
-
   eprint(f"Processing book contents...")
   book = epub.read_epub(epubFileSpec)
   newBook = epub.EpubBook()
@@ -87,15 +93,12 @@ def main():
   for item in book.get_items():
     if item.get_type() == ebooklib.ITEM_DOCUMENT:
       cleanTokens = []
-      # tokens = re.split(r'(\W)', item.get_content().decode("latin-1"))
-      tokens = re.split(r'(?<=>)(.+?)(?=<)', item.get_content().decode("latin-1"), re.DOTALL|re.MULTILINE)
-      # pprint.pprint(tokens)
-      for token in tokens:
-        censoredToken = pf.censor(token)
-        #if token.isalpha() and (len(token) > 2): # only censor alpha-words > 2 characters
-          #censoredToken = pf.censor(token)
-        #else:
-          #censoredToken = token
+      for token in tagTokenizer(item.get_content().decode("latin-1")):
+        trimmedToken = token.strip()
+        if (len(trimmedToken) <= 2) or (trimmedToken.startswith('<') and trimmedToken.endswith('>')):
+          censoredToken = token
+        else:
+          censoredToken = pf.censor(token)
         cleanTokens.append(censoredToken)
       item.set_content(''.join(cleanTokens).encode("latin-1"))
       newBook.spine.append(item)
