@@ -101,11 +101,13 @@ def main():
       for token in tagTokenizer(item.get_content().decode("latin-1")):
         trimmedToken = token.strip()
         if (len(trimmedToken) <= 2) or (trimmedToken.startswith('<') and trimmedToken.endswith('>')):
+          # print(f"including: {token}")
           cleanTokens.append(token)
         else:
+          # print(f"censoring: {token}")
           cleanTokens.append(pf.censor(token))
-        if (len(cleanTokens) % 100 == 0):
-          eprint(f"Processed {len(cleanTokens)} tokens from section {documentNumber}...")
+        #if (len(cleanTokens) % 100 == 0):
+          #eprint(f"Processed {len(cleanTokens)} tokens from section {documentNumber}...")
       item.set_content(''.join(cleanTokens).encode("latin-1"))
       newBook.spine.append(item)
       newBook.add_item(item)
