@@ -18,25 +18,28 @@ def tagTokenizer(s):
   inTag = False
   tokens = []
   lastChar = None
+  tokenPosStart = 0
+  lastYieldEnd = -1
   for i, char in enumerate(s):
     if inTag and (char == '>') and (lastChar != '\\'):
       inTag = False
-      tokens.append(char)
-      if (len(tokens) > 0):
-        yield ''.join(tokens)
-      tokens.clear()
+      if (i >= tokenPosStart):
+        # print(f"TAG: {s[tokenPosStart:i+1]}")
+        yield s[tokenPosStart:i+1]
+        lastYieldEnd = i
+      tokenPosStart = i+1
     elif (not inTag) and (char == '<') and (lastChar != '\\'):
       inTag = True
-      if (len(tokens) > 0):
-        yield ''.join(tokens)
-      tokens.clear()
-      tokens.append(char)
-    else:
-      tokens.append(char)
+      if (i > tokenPosStart):
+        # print(f"TXT: {s[tokenPosStart:i]}")
+        yield s[tokenPosStart:i]
+        lastYieldEnd = i-1
+      tokenPosStart = i
     lastChar = char
 
-  if (len(tokens) > 0):
-    yield ''.join(tokens)
+  if (len(s) > lastYieldEnd):
+    # print(f"END: [{s[lastYieldEnd+1:len(s)]}]")
+    yield s[lastYieldEnd+1:len(s)]
 
 METADATA_FILESPEC = "/tmp/metadata.opf"
 def main():
@@ -90,8 +93,10 @@ def main():
   book = epub.read_epub(epubFileSpec)
   newBook = epub.EpubBook()
   newBook.spine = ['nav']
+  documentNumber = 0
   for item in book.get_items():
     if item.get_type() == ebooklib.ITEM_DOCUMENT:
+      documentNumber += 1
       cleanTokens = []
       for token in tagTokenizer(item.get_content().decode("latin-1")):
         trimmedToken = token.strip()
@@ -99,6 +104,8 @@ def main():
           cleanTokens.append(token)
         else:
           cleanTokens.append(pf.censor(token))
+        if (len(cleanTokens) % 100 == 0):
+          eprint(f"Processed {len(cleanTokens)} tokens from section {documentNumber}...")
       item.set_content(''.join(cleanTokens).encode("latin-1"))
       newBook.spine.append(item)
       newBook.add_item(item)
