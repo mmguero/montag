@@ -16,7 +16,6 @@ def eprint(*args, **kwargs):
 
 def tagTokenizer(s):
   inTag = False
-  tokens = []
   lastChar = None
   tokenPosStart = 0
   lastYieldEnd = -1
@@ -71,9 +70,9 @@ def main():
 
   # save off the metadata to be restored after conversion
   eprint(f"Extracting metadata...")
-  metadataExitCode = subprocess.call(["/usr/bin/ebook-meta", "--to-opf="+METADATA_FILESPEC, args.input], stdout=devnull, stderr=devnull)
+  metadataExitCode = subprocess.call(["/usr/bin/ebook-meta", args.input, "--to-opf="+METADATA_FILESPEC], stdout=devnull, stderr=devnull)
   if (metadataExitCode != 0):
-    raise subprocess.CalledProcessError(metadataExitCode, f"/usr/bin/ebook-meta --to-opf={METADATA_FILESPEC} {args.input}")
+    raise subprocess.CalledProcessError(metadataExitCode, f"/usr/bin/ebook-meta {args.input} --to-opf={METADATA_FILESPEC}")
 
   # convert the book from whatever format it is into epub for conversion
   if "epub" in bookMagic.lower():
@@ -113,9 +112,25 @@ def main():
       newBook.add_item(item)
     else:
       newBook.add_item(item)
-
   book.add_item(epub.EpubNcx())
   book.add_item(epub.EpubNav())
-  epub.write_epub(args.output, newBook)
+
+  # write epub (either final or intermediate)
+  eprint(f"Generating output...")
+  if args.output.lower().endswith('.epub'):
+    epub.write_epub(args.output, newBook)
+  else:
+    cleanEpubFileSpec = "/tmp/ebook_cleaned.epub"
+    epub.write_epub(cleanEpubFileSpec, newBook)
+    eprint(f"Converting...")
+    fromEpubExitCode = subprocess.call(["/usr/bin/ebook-convert", cleanEpubFileSpec, args.output], stdout=devnull, stderr=devnull)
+    if (fromEpubExitCode != 0):
+      raise subprocess.CalledProcessError(toEpubExitCode, f"/usr/bin/ebook-convert {cleanEpubFileSpec} {args.output}")
+
+  # restore metadata
+  eprint(f"Restoring metadata...")
+  metadataExitCode = subprocess.call(["/usr/bin/ebook-meta", args.output, "--from-opf="+METADATA_FILESPEC], stdout=devnull, stderr=devnull)
+  if (metadataExitCode != 0):
+    raise subprocess.CalledProcessError(metadataExitCode, f"/usr/bin/ebook-meta {args.output} --from-opf={METADATA_FILESPEC}")
 
 if __name__ == '__main__': main()
