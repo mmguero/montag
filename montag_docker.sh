@@ -35,6 +35,6 @@ docker run --rm -t \
   -v "$TEMP_DIR:/data:rw" \
   montag:latest -i "/data/$IN_BASENAME" -o "/data/$OUT_BASENAME"
 
-cp "$TEMP_DIR/OUT_BASENAME" "$OUT_FILE"
+cp "$TEMP_DIR/$OUT_BASENAME" "$OUT_FILE"
 
 echo "$OUT_FILE"
