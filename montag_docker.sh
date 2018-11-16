@@ -19,12 +19,11 @@ elif [ ! -f $IN_FILE ]; then
   exit 1
 fi
 
-TEMP_DIR=$(mktemp -d -t tmp.XXXXXXXXXX)
+TEMP_DIR=$(mktemp -d -t montag.XXXXXXXXXX)
 
 function finish {
   rm -rf "$TEMP_DIR"
 }
-
 trap finish EXIT
 
 IN_BASENAME="$(basename "$IN_FILE")"
