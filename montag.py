@@ -82,7 +82,7 @@ def main():
     wasEpub = False
     epubFileSpec = "/tmp/ebook.epub"
     eprint(f"Converting to EPUB...")
-    toEpubExitCode = subprocess.call(["/usr/bin/ebook-convert", args.input, epubFileSpec], stdout=devnull, stderr=devnull)
+    toEpubExitCode = subprocess.call(["/usr/bin/ebook-convert", args.input, epubFileSpec, "--unsmarten-punctuation"], stdout=devnull, stderr=devnull)
     if (toEpubExitCode != 0):
       raise subprocess.CalledProcessError(toEpubExitCode, f"/usr/bin/ebook-convert {args.input} {epubFileSpec}")
 
@@ -103,10 +103,10 @@ def main():
           # print(f"including: {token}")
           cleanTokens.append(token)
         else:
-          # print(f"censoring: {token}")
+          #print(f"censoring: {token}")
           cleanTokens.append(pf.censor(token))
-        #if (len(cleanTokens) % 100 == 0):
-          #eprint(f"Processed {len(cleanTokens)} tokens from section {documentNumber}...")
+        if (len(cleanTokens) % 100 == 0):
+          eprint(f"Processed {len(cleanTokens)} tokens from section {documentNumber}...")
       item.set_content(''.join(cleanTokens).encode("latin-1"))
       newBook.spine.append(item)
       newBook.add_item(item)
