@@ -8,37 +8,49 @@ import pprint
 import subprocess
 import magic
 import ebooklib
+import re
 from ebooklib import epub
-from profanity_filter import ProfanityFilter
+
+__location__ = os.path.realpath(
+    os.path.join(os.getcwd(), os.path.dirname(__file__)))
+
+textSplitRegex = re.compile(r'[a-zA-Z]+|[^a-zA-Z]+', re.DOTALL|re.MULTILINE)
 
 def eprint(*args, **kwargs):
   print(*args, file=sys.stderr, **kwargs)
 
-def tagTokenizer(s):
+def tagTokenizer(s): # returns strNeedsCensoring, str
   inTag = False
   lastChar = None
   tokenPosStart = 0
   lastYieldEnd = -1
   for i, char in enumerate(s):
     if inTag and (char == '>') and (lastChar != '\\'):
+      # we are in an HTML tag, no need to censor anything
       inTag = False
       if (i >= tokenPosStart):
         # print(f"TAG: {s[tokenPosStart:i+1]}")
-        yield s[tokenPosStart:i+1]
+        yield False, s[tokenPosStart:i+1]
         lastYieldEnd = i
       tokenPosStart = i+1
     elif (not inTag) and (char == '<') and (lastChar != '\\'):
+      # we are not in an HTML tag, split up words/non-words and
+      # only censor the words
       inTag = True
       if (i > tokenPosStart):
-        # print(f"TXT: {s[tokenPosStart:i]}")
-        yield s[tokenPosStart:i]
+        for textToken in re.findall(textSplitRegex, s[tokenPosStart:i]):
+          # print(f"TXT: {textToken}")
+          yield ((len(textToken) > 2) and textToken[:1].isalpha()), textToken
         lastYieldEnd = i-1
       tokenPosStart = i
     lastChar = char
 
   if (len(s) > lastYieldEnd):
-    # print(f"END: [{s[lastYieldEnd+1:len(s)]}]")
-    yield s[lastYieldEnd+1:len(s)]
+    if inTag:
+      yield False, s[lastYieldEnd+1:len(s)]
+    else:
+      for textToken in re.findall(textSplitRegex, s[lastYieldEnd+1:len(s)]):
+        yield ((len(textToken) > 2) and textToken[:1].isalpha()), textToken
 
 METADATA_FILESPEC = "/tmp/metadata.opf"
 def main():
@@ -48,9 +60,7 @@ def main():
   requiredNamed = parser.add_argument_group('required arguments')
   requiredNamed.add_argument('-i', '--input', required=True, dest='input', metavar='<STR>', type=str, default='', help='Input file')
   requiredNamed.add_argument('-o', '--output', required=True, dest='output', metavar='<STR>', type=str, default='', help='Output file')
-  parser.add_argument('-l', '--languages', dest='languages', metavar='<STR>', type=str, default='en', help='Test for profanity using specified languages (comma separated, default: en)')
-  parser.add_argument('-w', '--whole-words', dest='censor_whole_words', action='store_true', help='Censor whole words (default: false)')
-  parser.add_argument('-d', '--deep', dest='deep_analysis', action='store_true', help='Deep analysis (default: false, may cause some issues depending on word list)')
+  requiredNamed.add_argument('-w', '--word-list', dest='swears', metavar='<STR>', type=str, default=os.path.join(__location__, 'swears.txt'), help='Profanity list text file')
   try:
     parser.error = parser.exit
     args = parser.parse_args()
@@ -58,8 +68,8 @@ def main():
     parser.print_help()
     exit(2)
 
-  # initialize the profanity filter
-  pf = ProfanityFilter(languages=args.languages.split(','), censor_whole_words=args.censor_whole_words, deep_analysis=args.deep_analysis)
+  # initialize the set of profanity
+  swears = set(map(lambda x:x.lower(),[line.strip() for line in open(args.swears, 'r')]))
 
   # determine the type of the ebook
   bookMagic = "application/octet-stream"
@@ -82,7 +92,7 @@ def main():
     wasEpub = False
     epubFileSpec = "/tmp/ebook.epub"
     eprint(f"Converting to EPUB...")
-    toEpubExitCode = subprocess.call(["/usr/bin/ebook-convert", args.input, epubFileSpec, "--unsmarten-punctuation"], stdout=devnull, stderr=devnull)
+    toEpubExitCode = subprocess.call(["/usr/bin/ebook-convert", args.input, epubFileSpec], stdout=devnull, stderr=devnull)
     if (toEpubExitCode != 0):
       raise subprocess.CalledProcessError(toEpubExitCode, f"/usr/bin/ebook-convert {args.input} {epubFileSpec}")
 
@@ -97,16 +107,15 @@ def main():
     if item.get_type() == ebooklib.ITEM_DOCUMENT:
       documentNumber += 1
       cleanTokens = []
-      for token in tagTokenizer(item.get_content().decode("latin-1")):
-        trimmedToken = token.strip()
-        if (len(trimmedToken) <= 2) or (trimmedToken.startswith('<') and trimmedToken.endswith('>')):
-          # print(f"including: {token}")
-          cleanTokens.append(token)
+      for tokenNeedsCensoring, token in tagTokenizer(item.get_content().decode("latin-1")):
+        if tokenNeedsCensoring and (token.lower() in swears):
+          # print(f"censoring:→{token}←")
+          cleanTokens.append("*" * len(token))
         else:
-          #print(f"censoring: {token}")
-          cleanTokens.append(pf.censor(token))
-        if (len(cleanTokens) % 100 == 0):
-          eprint(f"Processed {len(cleanTokens)} tokens from section {documentNumber}...")
+          # print(f"including:→{token}←")
+          cleanTokens.append(token)
+        # if (len(cleanTokens) % 100 == 0):
+        #   eprint(f"Processed {len(cleanTokens)} tokens from section {documentNumber}...")
       item.set_content(''.join(cleanTokens).encode("latin-1"))
       newBook.spine.append(item)
       newBook.add_item(item)
