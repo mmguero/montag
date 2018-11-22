@@ -60,8 +60,8 @@ def main():
   requiredNamed = parser.add_argument_group('required arguments')
   requiredNamed.add_argument('-i', '--input', required=True, dest='input', metavar='<STR>', type=str, default='', help='Input file')
   requiredNamed.add_argument('-o', '--output', required=True, dest='output', metavar='<STR>', type=str, default='', help='Output file')
-  requiredNamed.add_argument('-w', '--word-list', dest='swears', metavar='<STR>', type=str, default=os.path.join(__location__, 'swears.txt'), help='Profanity list text file')
-  requiredNamed.add_argument('-e', '--encoding', dest='encoding', metavar='<STR>', type=str, default='utf-8', help='Text encoding')
+  requiredNamed.add_argument('-w', '--word-list', dest='swears', metavar='<STR>', type=str, default=os.path.join(__location__, 'swears.txt'), help='Profanity list text file (default: swears.txt)')
+  requiredNamed.add_argument('-e', '--encoding', dest='encoding', metavar='<STR>', type=str, default='utf-8', help='Text encoding (default: utf-8)')
   try:
     parser.error = parser.exit
     args = parser.parse_args()
