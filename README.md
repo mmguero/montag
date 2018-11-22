@@ -60,11 +60,17 @@ Restoring metadata...
 
 Upon opening the book, you will find the text reads something like this:
 > CHAPTER 1
+> 
 > LOG ENTRY: SOL 6
+> 
 > I’m pretty much ******.
+> 
 > That’s my considered opinion.
+> 
 > ******.
+> 
 > Six days into what should be the greatest two months of my life, and it’s turned into a nightmare.
+> 
 > ...
 
 Alternately, if you are using the Docker method described above, use [`montag_docker.sh`](montag_docker.sh) rather than [`montag.py`](montag.py) directly.
