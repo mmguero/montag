@@ -1,20 +1,22 @@
 #!/bin/bash
 
-while getopts i:o:s: opts; do
+ENCODING="utf-8"
+while getopts i:o:s:e: opts; do
    case ${opts} in
       i) IN_FILE=${OPTARG} ;;
       o) OUT_FILE=${OPTARG} ;;
       s) SWEARS_FILE=${OPTARG} ;;
+      e) ENCODING=${OPTARG} ;;
    esac
 done
 
 if [[ -z $IN_FILE || -z $OUT_FILE ]] ; then
   echo "usage:"
-  echo "  montag.sh -i <IN_FILE> -o <OUT_FILE>"
+  echo "  montag.sh -i <IN_FILE> -o <OUT_FILE> [-s <PROFANITY_FILE> -e <ENCODING>]"
   exit 1
 elif [[ ! -f $IN_FILE ]]; then
   echo "usage:"
-  echo "  montag.sh -i <IN_FILE> -o <OUT_FILE>"
+  echo "  montag.sh -i <IN_FILE> -o <OUT_FILE> [-s <PROFANITY_FILE> -e <ENCODING>]"
   echo ""
   echo "$IN_FILE does not exist!"
   exit 1
@@ -41,7 +43,7 @@ fi
 
 docker run --rm -t \
   -v "$TEMP_DIR:/data:rw" $SWEARS_MAP \
-  montag:latest -i "/data/$IN_BASENAME" -o "/data/$OUT_BASENAME"
+  montag:latest -i "/data/$IN_BASENAME" -o "/data/$OUT_BASENAME" -e "$ENCODING"
 
 cp "$TEMP_DIR/$OUT_BASENAME" "$OUT_FILE"
 

@@ -14,7 +14,7 @@ from ebooklib import epub
 __location__ = os.path.realpath(
     os.path.join(os.getcwd(), os.path.dirname(__file__)))
 
-textSplitRegex = re.compile(r'[a-zA-Z]+|[^a-zA-Z]+', re.DOTALL|re.MULTILINE)
+textSplitRegex = re.compile(r'\w+|\W+', re.DOTALL|re.MULTILINE|re.U)
 
 def eprint(*args, **kwargs):
   print(*args, file=sys.stderr, **kwargs)
@@ -61,6 +61,7 @@ def main():
   requiredNamed.add_argument('-i', '--input', required=True, dest='input', metavar='<STR>', type=str, default='', help='Input file')
   requiredNamed.add_argument('-o', '--output', required=True, dest='output', metavar='<STR>', type=str, default='', help='Output file')
   requiredNamed.add_argument('-w', '--word-list', dest='swears', metavar='<STR>', type=str, default=os.path.join(__location__, 'swears.txt'), help='Profanity list text file')
+  requiredNamed.add_argument('-e', '--encoding', dest='encoding', metavar='<STR>', type=str, default='utf-8', help='Text encoding')
   try:
     parser.error = parser.exit
     args = parser.parse_args()
@@ -69,7 +70,7 @@ def main():
     exit(2)
 
   # initialize the set of profanity
-  swears = set(map(lambda x:x.lower(),[line.strip() for line in open(args.swears, 'r')]))
+  swears = set(map(lambda x:x.lower(),[line.strip() for line in open(args.swears, 'r', encoding=args.encoding)]))
 
   # determine the type of the ebook
   bookMagic = "application/octet-stream"
@@ -107,7 +108,7 @@ def main():
     if item.get_type() == ebooklib.ITEM_DOCUMENT:
       documentNumber += 1
       cleanTokens = []
-      for tokenNeedsCensoring, token in tagTokenizer(item.get_content().decode("latin-1")):
+      for tokenNeedsCensoring, token in tagTokenizer(item.get_content().decode(args.encoding)):
         if tokenNeedsCensoring and (token.lower() in swears):
           # print(f"censoring:→{token}←")
           cleanTokens.append("*" * len(token))
@@ -116,7 +117,7 @@ def main():
           cleanTokens.append(token)
         # if (len(cleanTokens) % 100 == 0):
         #   eprint(f"Processed {len(cleanTokens)} tokens from section {documentNumber}...")
-      item.set_content(''.join(cleanTokens).encode("latin-1"))
+      item.set_content(''.join(cleanTokens).encode(args.encoding))
       newBook.spine.append(item)
       newBook.add_item(item)
     else:
