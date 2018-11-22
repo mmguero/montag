@@ -81,7 +81,7 @@ Montag is not smart enough to do any in-depth language analysis or deep filterin
 
 * Only whole words are matched and censored. In other words, if the word `frick` is in your list of profanity, `Frick you!` will be censored, but `Absofrickenlutely` will not. As such if you wish to catch all of the variations of the word `frick`, you'd have to list them individually in your `swears.txt` word list.
 * Having phrases (eg., multiple space-separated words) in your `swears.txt` word list won't do you any good.
-* Montag can't tell the difference between different meanings of the same word. For example, if the word `ass` is in your list, both "And he said unto his sons, Saddle me the ass. So they saddled him the ass: and he rode thereon" (from the KJV of the Bible) and "Then the high king carefully turned the golden screw. Once: Nothing. Twice: Nothing. Then he turned it the third time, and the boy’s ass fell off" (from Patrick Rothfuss' "The Wise Man's Fear") will be censored.
+* Montag can't tell the difference between different meanings of the same word. For example, if the word `ass` is in your list, both "And he said unto his sons, Saddle me the ass. So they saddled him the ass: and he rode thereon" (from the KJV of *The Bible*) and "Then the high king carefully turned the golden screw. Once: Nothing. Twice: Nothing. Then he turned it the third time, and the boy’s ass fell off" (from Patrick Rothfuss' *The Wise Man's Fear*) will be censored.
 
 ## Contributing
 
