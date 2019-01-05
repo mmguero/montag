@@ -229,6 +229,8 @@ fuckahs
 fuckar
 fuckaree
 fuckarees
+fuckaroo
+fuckaroos
 fuckars
 fuckas
 fuckas
@@ -293,6 +295,7 @@ fuckoffs
 fuckpig
 fuckpigs
 fucks
+fucksome
 fucktard
 fucktards
 fuckton
@@ -392,8 +395,10 @@ muffdives
 muffindiver
 muffindivers
 muthafuck
+muthafucka
 muthafuckah
 muthafuckahs
+muthafuckas
 muthafucks
 numbfuck
 numbfucks
@@ -509,6 +514,8 @@ titty
 tittys
 twat
 twats
+unfuck
+unfucked
 wank
 wanker
 wankers
