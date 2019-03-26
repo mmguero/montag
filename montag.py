@@ -11,8 +11,7 @@ import ebooklib
 import re
 from ebooklib import epub
 
-__location__ = os.path.realpath(
-    os.path.join(os.getcwd(), os.path.dirname(__file__)))
+__location__ = os.path.dirname(os.path.realpath(__file__))
 
 textSplitRegex = re.compile(r'\w+|\W+', re.DOTALL|re.MULTILINE|re.U)
 
