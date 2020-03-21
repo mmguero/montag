@@ -337,6 +337,7 @@ fudgepacker
 fudgepackers
 fuuck
 fuucks
+getthefuckout
 God damn
 god damned
 god-damn
@@ -444,6 +445,8 @@ pigshit
 pigshits
 ratfuck
 ratfucks
+ratshit
+ratshits
 rimjob
 rimjobs
 shat
@@ -518,6 +521,7 @@ stupidfucks
 sweetfucked
 sweetfucker
 sweetfuckers
+thefuck
 tit
 titfuck
 titfucker
@@ -533,6 +537,7 @@ twat
 twats
 unfuck
 unfucked
+wakethefuckup
 wank
 wanker
 wankers
