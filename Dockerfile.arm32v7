@@ -41,7 +41,7 @@ RUN apt-get update && \
       build-essential \
       pkg-config \
       xvfb && \
-    pip2 install filemagic ebooklib python-dateutil pytz cssutils Pillow html5_parser && \
+    pip2 install python-magic ebooklib python-dateutil pytz cssutils Pillow html5_parser && \
     pip3 install lxml Pillow rarfile && \
     cd / && \
     tar xvf /tmp/calibre_files.tar.gz && \
