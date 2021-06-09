@@ -10,7 +10,7 @@ There are all sorts of arguments to be had about obscenity filters, censorship, 
 
 ### Python Prerequisites
 
-[Montag](montag.py) requires Python 3 and the [EbookLib](https://github.com/aerkalov/ebooklib) and [filemagic](https://github.com/aliles/filemagic) libraries. It also uses some utilities from the [Calibre](https://calibre-ebook.com/) project.
+[Montag](montag.py) requires Python 3 and the [EbookLib](https://github.com/aerkalov/ebooklib) and [python-magic](https://github.com/ahupp/python-magic) libraries. It also uses some utilities from the [Calibre](https://calibre-ebook.com/) project.
 
 On a Debian-based Linux distribution, these requirements could be installed with:
 ```
@@ -19,12 +19,12 @@ $ sudo apt-get install libmagic1 imagemagick calibre python3 python3-pip
 
 After which the Python libraries could be installed:
 ```
-$ pip3 install -U filemagic ebooklib
+$ pip3 install -U python-magic ebooklib
 ```
 
 ### Docker
 
-Alternately, a [Dockerfile](Dockerfile) is provided to allow you to run Montag in Docker. You can build the `montag:latest` Docker image with [`build_docker.sh`](build_docker.sh), then use [`montag_docker.sh`](montag_docker.sh) to process your e-book files.
+Alternately, a [Dockerfile](Dockerfile) is provided to allow you to run Montag in Docker. You can build the `mmguero/montag:latest` Docker image with [`build_docker.sh`](build_docker.sh), then use [`montag-docker.sh`](montag-docker.sh) to process your e-book files.
 
 ## Usage
 
@@ -73,7 +73,7 @@ Upon opening the book, you will find the text reads something like this:
 > 
 > ...
 
-Alternately, if you are using the Docker method described above, use [`montag_docker.sh`](montag_docker.sh) rather than [`montag.py`](montag.py) directly.
+Alternately, if you are using the Docker method described above, use [`montag-docker.sh`](montag-docker.sh) rather than [`montag.py`](montag.py) directly.
 
 ## Known Limitations
 
@@ -100,7 +100,7 @@ This project is licensed under the Apache License, v2.0 - see the [LICENSE](LICE
 Thanks to:
 * [Calibre](https://calibre-ebook.com/about) developer Kovid Goyal and contributors
 * the contributors to [EbookLib](https://github.com/aerkalov/ebooklib/blob/master/AUTHORS.txt)
-* [filemagic](https://github.com/aliles/filemagic) developer Aaron Iles and contributors
+* [python-magic](https://github.com/ahupp/python-magic) developer Adam Hupp and contributors
 
 ## Disclaimers
 
