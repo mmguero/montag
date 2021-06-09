@@ -1,4 +1,4 @@
-name: montag-build-push
+name: montag-build-push-arm32v7
 
 on:
   push:
