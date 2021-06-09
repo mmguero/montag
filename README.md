@@ -2,9 +2,9 @@
 
 *"Didn't firemen prevent fires rather than stoke them up and get them going?"*
 
-Montag is a utility which reads e-book files (in any formats supported by [Calibre's ebook-convert](https://manual.calibre-ebook.com/generated/en/ebook-convert.html)) and scrubs them of profanity (or words from any other list you can provide).
+Montag is a utility which reads an e-book file (in any format supported by [Calibre's ebook-convert](https://manual.calibre-ebook.com/generated/en/ebook-convert.html)) and scrubs it of profanity (or words from any other list you can provide).
 
-There are all sorts of arguments to be had about obscenity filters, censorship, etc. That's okay! I'm not really interested in having those arguments. My 13 year-old daughter asked me if I could take some swear words out of a book she was reading so I wrote this for her. If it's useful to you, great. If not, carry on my wayward son.
+There are all sorts of arguments to be had about obscenity filters, censorship, etc. That's okay! I'm not really interested in having those arguments. My 13 year-old daughter asked me if I could take some swear words out of a young adult novel she was reading so I wrote this for her. If it's useful to you, great. If not, carry on my wayward son.
 
 ## Prerequisites
 
@@ -14,12 +14,7 @@ There are all sorts of arguments to be had about obscenity filters, censorship, 
 
 On a Debian-based Linux distribution, these requirements could be installed with:
 ```
-$ sudo apt-get install libmagic1 imagemagick calibre python3 python3-pip
-```
-
-After which the Python libraries could be installed:
-```
-$ pip3 install -U python-magic ebooklib
+$ sudo apt-get install libmagic1 imagemagick calibre-bin python3 python3-magic python3-ebooklib
 ```
 
 ### Docker
