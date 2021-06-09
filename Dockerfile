@@ -1,20 +1,26 @@
-FROM python:3-slim-stretch
+FROM debian:buster-slim
 
 LABEL maintainer "mmguero <tlacuache@gmail.com>"
 
 ENV DEBIAN_FRONTEND noninteractive
 
-ADD requirements.txt /tmp/montag-requirements.txt
-
-RUN apt-get update && \
-    apt-get install --no-install-recommends -y curl xvfb libmagic1 imagemagick build-essential && \
-    pip3 install -r /tmp/montag-requirements.txt && \
-    rm -f /tmp/montag-requirements.txt && \
-    bash -c 'curl https://raw.githubusercontent.com/kovidgoyal/calibre/master/setup/linux-installer.py | python -c "import sys; main=lambda:sys.stderr.write(\"Download failed\n\"); exec(sys.stdin.read()); main()"' && \
+RUN echo "deb http://deb.debian.org/debian buster-backports main" >> /etc/apt/sources.list && \
+    apt-get -q update && \
+    apt-get install -q -y --no-install-recommends -t buster-backports \
+      ca-certificates \
+      curl \
+      xvfb \
+      libmagic1 \
+      imagemagick \
+      python3-minimal \
+      python3-magic \
+      python3-ebooklib \
+      xz-utils && \
+    bash -c 'curl -sSL https://raw.githubusercontent.com/kovidgoyal/calibre/master/setup/linux-installer.py | python3 -c "import sys; main=lambda:sys.stderr.write(\"Download failed\n\"); exec(sys.stdin.read()); main()"' && \
     apt-get clean && \
-    rm -rf /var/lib/apt/lists/* /tmp/*
+      rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* /var/cache/*/*
 
-ADD montag.py /usr/local/bin/
+ADD montag.py /usr/local/bin
 ADD swears.txt /usr/local/bin
 
 ENTRYPOINT ["python3", "/usr/local/bin/montag.py"]
