@@ -1,4 +1,4 @@
-name: montag-build-push
+name: montag-build-push-arm32v7-dockerhub
 
 on:
   push:
@@ -29,6 +29,7 @@ jobs:
         uses: docker/build-push-action@v2
         with:
           context: .
-          file: ./Dockerfile
+          file: ./Dockerfile.arm32v7
+          platforms: linux/arm/v7
           push: true
-          tags: mmguero/montag:latest
+          tags: mmguero/montag:arm32v7
