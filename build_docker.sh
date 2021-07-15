@@ -1,3 +1,3 @@
 #!/usr/bin/env bash
 
-docker build -t mmguero/montag:latest .
+docker build -t ghcr.io/mmguero/montag:latest .

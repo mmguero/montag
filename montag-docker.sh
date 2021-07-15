@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-export MONTAG_IMAGE="${MONTAG_DOCKER_IMAGE:-mmguero/montag:latest}"
+export MONTAG_IMAGE="${MONTAG_DOCKER_IMAGE:-ghcr.io/mmguero/montag:latest}"
 
 ENCODING="utf-8"
 while getopts i:o:s:e: opts; do
