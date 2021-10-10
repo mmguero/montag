@@ -1,4 +1,4 @@
-FROM debian:buster-slim
+FROM debian:bullseye-slim
 
 LABEL maintainer="mero.mero.guero@gmail.com"
 LABEL org.opencontainers.image.authors='mero.mero.guero@gmail.com'
@@ -9,9 +9,9 @@ LABEL org.opencontainers.image.description='Dockerized E-Book Profanity Scrubber
 
 ENV DEBIAN_FRONTEND noninteractive
 
-RUN echo "deb http://deb.debian.org/debian buster-backports main" >> /etc/apt/sources.list && \
+RUN echo "deb http://deb.debian.org/debian bullseye-backports main" >> /etc/apt/sources.list && \
     apt-get -q update && \
-    apt-get install -q -y --no-install-recommends -t buster-backports \
+    apt-get install -q -y --no-install-recommends -t bullseye-backports \
       ca-certificates \
       curl \
       xvfb \
