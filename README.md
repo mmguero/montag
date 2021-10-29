@@ -8,9 +8,9 @@ There are all sorts of arguments to be had about obscenity filters, censorship, 
 
 montag is part of a family of projects with similar goals:
 
-* [cleanvid](https://github.com/mmguero/cleanvid) for video files
-* [monkeyplug](https://github.com/mmguero/monkeyplug) for audio files
-* [montag](https://github.com/mmguero/montag) for ebooks
+* 📼 [cleanvid](https://github.com/mmguero/cleanvid) for video files
+* 🎤 [monkeyplug](https://github.com/mmguero/monkeyplug) for audio files
+* 📕 [montag](https://github.com/mmguero/montag) for ebooks
 
 ## Prerequisites
 
