@@ -6,6 +6,12 @@ Montag is a utility which reads an e-book file (in any format supported by [Cali
 
 There are all sorts of arguments to be had about obscenity filters, censorship, etc. That's okay! I'm not really interested in having those arguments. My 13 year-old daughter asked me if I could take some swear words out of a young adult novel she was reading so I wrote this for her. If it's useful to you, great. If not, carry on my wayward son.
 
+montag is part of a family of projects with similar goals:
+
+* [cleanvid](https://github.com/mmguero/cleanvid) for audio files
+* [monkeyplug](https://github.com/mmguero/monkeyplug) for ebooks
+* [montag](https://github.com/mmguero/montag) for ebooks
+
 ## Prerequisites
 
 ### Python Prerequisites
@@ -88,7 +94,7 @@ If you'd like to help improve Montag, pull requests will be welcomed!
 
 ## License
 
-This project is licensed under the Apache License, v2.0 - see the [LICENSE](LICENSE) file for details.
+This project is licensed under the BSD 3-Clause License - see the [LICENSE](LICENSE) file for details.
 
 ## Acknowledgments
 
@@ -96,7 +102,3 @@ Thanks to:
 * [Calibre](https://calibre-ebook.com/about) developer Kovid Goyal and contributors
 * the contributors to [EbookLib](https://github.com/aerkalov/ebooklib/blob/master/AUTHORS.txt)
 * [python-magic](https://github.com/ahupp/python-magic) developer Adam Hupp and contributors
-
-## Disclaimers
-
-By using Montag you understand and agree that its author(s) are in no way responsible for your actions. If Montag borks your system, or if you download a "pirated" e-book and SWAT team of the copyright office of your respective nation busts down your door with a flash-bang grenade, or if Montag censors too much or too little and your feelings get hurt, or whatever, well, that's on you, dog.
