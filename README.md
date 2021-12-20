@@ -1,5 +1,8 @@
 # Montag
 
+![Docker Image](https://github.com/mmguero/montag/workflows/montag-build-push-ghcr/badge.svg)
+![Docker Image (arm32v7)](https://github.com/mmguero/montag/workflows/montag-build-push-arm32v7-ghcr/badge.svg)
+
 *"Didn't firemen prevent fires rather than stoke them up and get them going?"*
 
 Montag is a utility which reads an e-book file (in any format supported by [Calibre's ebook-convert](https://manual.calibre-ebook.com/generated/en/ebook-convert.html)) and scrubs it of profanity (or words from any other list you can provide).
