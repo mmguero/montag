@@ -3,7 +3,7 @@ name: montag-build-push-arm32v7-ghcr
 on:
   push:
     branches:
-      - 'master'
+      - 'main'
   workflow_dispatch:
   repository_dispatch:
 
