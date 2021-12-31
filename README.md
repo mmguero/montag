@@ -1,19 +1,33 @@
 # Montag
 
-![Docker Image](https://github.com/mmguero/montag/workflows/montag-build-push-ghcr/badge.svg)
-![Docker Image (arm32v7)](https://github.com/mmguero/montag/workflows/montag-build-push-arm32v7-ghcr/badge.svg)
+[![Latest Version](https://img.shields.io/pypi/v/montag-cleaner)](https://pypi.python.org/pypi/montag-cleaner/) [![Docker Image](https://github.com/mmguero/montag/workflows/montag-build-push-ghcr/badge.svg)](https://github.com/mmguero/montag/pkgs/container/montag) [![Docker Image (arm32v7)](https://github.com/mmguero/montag/workflows/montag-build-push-arm32v7-ghcr/badge.svg)](https://github.com/mmguero/montag/pkgs/container/montag)
 
 *"Didn't firemen prevent fires rather than stoke them up and get them going?"*
 
-Montag is a utility which reads an e-book file (in any format supported by [Calibre's ebook-convert](https://manual.calibre-ebook.com/generated/en/ebook-convert.html)) and scrubs it of profanity (or words from any other list you can provide).
+**montag** is a utility which reads an e-book file (in any format supported by [Calibre's ebook-convert](https://manual.calibre-ebook.com/generated/en/ebook-convert.html)) and scrubs it of profanity (or words from any other list you can provide).
 
 There are all sorts of arguments to be had about obscenity filters, censorship, etc. That's okay! I'm not really interested in having those arguments. My 13 year-old daughter asked me if I could take some swear words out of a young adult novel she was reading so I wrote this for her. If it's useful to you, great. If not, carry on my wayward son.
 
-montag is part of a family of projects with similar goals:
+**montag** is part of a family of projects with similar goals:
 
 * 📼 [cleanvid](https://github.com/mmguero/cleanvid) for video files
 * 🎤 [monkeyplug](https://github.com/mmguero/monkeyplug) for audio files
 * 📕 [montag](https://github.com/mmguero/montag) for ebooks
+
+## Installation
+
+Using `pip`, to install the latest [release from PyPI](https://pypi.org/project/montag-cleaner/):
+
+```
+python3 -m pip install -U montag-cleaner
+```
+
+Or to install directly from GitHub:
+
+
+```
+python3 -m pip install -U 'git+https://github.com/mmguero/montag'
+```
 
 ## Prerequisites
 
@@ -26,9 +40,11 @@ On a Debian-based Linux distribution, these requirements could be installed with
 $ sudo apt-get install libmagic1 imagemagick calibre-bin python3 python3-magic python3-ebooklib
 ```
 
+The Python dependencies *should* be installed automatically if you are using `pip` to install montag.
+
 ### Docker
 
-Alternately, a [Dockerfile](Dockerfile) is provided to allow you to run Montag in Docker. You can build the `mmguero/montag:latest` Docker image with [`build_docker.sh`](build_docker.sh), then use [`montag-docker.sh`](montag-docker.sh) to process your e-book files.
+Alternately, a [Dockerfile](./docker/Dockerfile) is provided to allow you to run Montag in Docker. You can build the `ghcr.io/mmguero/montag` Docker image with [`build_docker.sh`](./docker/build_docker.sh), then use [`montag-docker.sh`](./docker/montag-docker.sh) to process your e-book files.
 
 ## Usage
 
@@ -77,7 +93,7 @@ Upon opening the book, you will find the text reads something like this:
 > 
 > ...
 
-Alternately, if you are using the Docker method described above, use [`montag-docker.sh`](montag-docker.sh) rather than [`montag.py`](montag.py) directly.
+Alternately, if you are using the Docker method described above, use [`montag-docker.sh`](./docker/montag-docker.sh) rather than [`montag.py`](./src/montag_cleaner/montag.py) directly.
 
 ## Known Limitations
 

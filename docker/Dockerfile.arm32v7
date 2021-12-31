@@ -8,6 +8,10 @@ LABEL org.opencontainers.image.title='mmguero/montag'
 LABEL org.opencontainers.image.description='Dockerized E-Book Profanity Scrubber'
 
 ENV DEBIAN_FRONTEND noninteractive
+ENV TERM xterm
+ENV PYTHONUNBUFFERED 1
+
+ADD . /usr/local/src/montag-cleaner
 
 RUN apt-get update && \
     apt-get install --no-install-recommends -y \
@@ -57,9 +61,11 @@ RUN apt-get update && \
       xdg-utils \
       xvfb \
       zlib1g-dev && \
-    pip3 install \
+    python3 -m ensurepip && \
+    python3 -m pip install --no-cache \
       Flask-SimpleLDAP \
-      goodreads && \
+      goodreads \
+      /usr/local/src/montag-cleaner && \
     cd /tmp && \
     apt-get download calibre && \
     apt-get -y --allow-downgrades --allow-remove-essential --allow-change-held-packages --purge remove \
@@ -79,10 +85,7 @@ RUN apt-get update && \
     dpkg --force-all -i /tmp/calibre*.deb && \
     apt-get clean && \
     ( dpkg -L calibre | grep -P "(/usr/share/(icons|man|applications|doc)|/usr/share/calibre/(images|quick_start))" | xargs -r -l rm -fv 2>/dev/null ) || true && \
-    rm -rf /tmp/* /var/lib/apt/lists/*
+    rm -rf /tmp/* /var/lib/apt/lists/* /usr/local/src/montag-cleaner
 
-ADD montag.py /usr/local/bin/
-ADD swears.txt /usr/local/bin
-
-ENTRYPOINT ["python3", "/usr/local/bin/montag.py"]
+ENTRYPOINT ["montag"]
 CMD []

@@ -43,7 +43,7 @@ jobs:
         uses: docker/build-push-action@v2
         with:
           context: .
-          file: ./Dockerfile.arm32v7
+          file: ./docker/Dockerfile.arm32v7
           platforms: linux/arm/v7
           push: true
           tags: ghcr.io/${{ github.repository_owner }}/montag:arm32v7
