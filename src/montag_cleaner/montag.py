@@ -107,11 +107,11 @@ def RunMontag():
         # save off the metadata to be restored after conversion
         eprint("Extracting metadata...")
         metadataExitCode = subprocess.call(
-            ["/usr/bin/ebook-meta", args.input, "--to-opf=" + metadataFileSpec], stdout=devnull, stderr=devnull
+            ["ebook-meta", args.input, "--to-opf=" + metadataFileSpec], stdout=devnull, stderr=devnull
         )
         if metadataExitCode != 0:
             raise subprocess.CalledProcessError(
-                metadataExitCode, f"/usr/bin/ebook-meta {args.input} --to-opf={metadataFileSpec}"
+                metadataExitCode, f"ebook-meta {args.input} --to-opf={metadataFileSpec}"
             )
 
         # convert the book from whatever format it is into epub for conversion
@@ -123,12 +123,10 @@ def RunMontag():
             epubFileSpec = os.path.join(tmpDirName, 'ebook.epub')
             eprint("Converting to EPUB...")
             toEpubExitCode = subprocess.call(
-                ["/usr/bin/ebook-convert", args.input, epubFileSpec], stdout=devnull, stderr=devnull
+                ["ebook-convert", args.input, epubFileSpec], stdout=devnull, stderr=devnull
             )
             if toEpubExitCode != 0:
-                raise subprocess.CalledProcessError(
-                    toEpubExitCode, f"/usr/bin/ebook-convert {args.input} {epubFileSpec}"
-                )
+                raise subprocess.CalledProcessError(toEpubExitCode, f"ebook-convert {args.input} {epubFileSpec}")
 
         # todo: somehow links/TOCs tend to get messed up
 
@@ -167,21 +165,19 @@ def RunMontag():
             epub.write_epub(cleanEpubFileSpec, newBook)
             eprint("Converting...")
             fromEpubExitCode = subprocess.call(
-                ["/usr/bin/ebook-convert", cleanEpubFileSpec, args.output], stdout=devnull, stderr=devnull
+                ["ebook-convert", cleanEpubFileSpec, args.output], stdout=devnull, stderr=devnull
             )
             if fromEpubExitCode != 0:
-                raise subprocess.CalledProcessError(
-                    toEpubExitCode, f"/usr/bin/ebook-convert {cleanEpubFileSpec} {args.output}"
-                )
+                raise subprocess.CalledProcessError(toEpubExitCode, f"ebook-convert {cleanEpubFileSpec} {args.output}")
 
         # restore metadata
         eprint("Restoring metadata...")
         metadataExitCode = subprocess.call(
-            ["/usr/bin/ebook-meta", args.output, "--from-opf=" + metadataFileSpec], stdout=devnull, stderr=devnull
+            ["ebook-meta", args.output, "--from-opf=" + metadataFileSpec], stdout=devnull, stderr=devnull
         )
         if metadataExitCode != 0:
             raise subprocess.CalledProcessError(
-                metadataExitCode, f"/usr/bin/ebook-meta {args.output} --from-opf={metadataFileSpec}"
+                metadataExitCode, f"ebook-meta {args.output} --from-opf={metadataFileSpec}"
             )
 
 
