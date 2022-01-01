@@ -40,6 +40,12 @@ On a Debian-based Linux distribution, these requirements could be installed with
 $ sudo apt-get install libmagic1 imagemagick calibre-bin python3 python3-magic python3-ebooklib
 ```
 
+On Windows, you'll need DLLs for `libmagic`. One option for installing these libraries is [`python-magic-bin`](https://pypi.org/project/python-magic-bin/):
+
+```
+python3 -m pip install python-magic-bin
+```
+
 The Python dependencies *should* be installed automatically if you are using `pip` to install montag.
 
 ### Docker
