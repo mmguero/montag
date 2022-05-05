@@ -5,7 +5,7 @@ LABEL org.opencontainers.image.authors='mero.mero.guero@gmail.com'
 LABEL org.opencontainers.image.url='https://github.com/mmguero/montag'
 LABEL org.opencontainers.image.source='https://github.com/mmguero/montag'
 LABEL org.opencontainers.image.title='mmguero/montag'
-LABEL org.opencontainers.image.description='Dockerized E-Book Profanity Scrubber'
+LABEL org.opencontainers.image.description='Containerized E-Book Profanity Scrubber'
 
 ENV DEBIAN_FRONTEND noninteractive
 ENV TERM xterm
