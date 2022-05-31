@@ -11,6 +11,8 @@ env:
   REGISTRY: ghcr.io
   IMAGE_NAME: ghcr.io/${{ github.repository_owner }}/montag
   IMAGE_TAG: latest
+  IMAGE_PLATFORM: linux/amd64
+  IMAGE_ARCH: amd64
   REPO_CONTEXT: .
   REPO_CONTAINERFILE: ./docker/Dockerfile
 
@@ -33,6 +35,9 @@ jobs:
         name: Checkout
         uses: actions/checkout@v2
       -
+        name: Set up QEMU
+        uses: docker/setup-qemu-action@v2
+      -
         name: Log in to registry
         uses: redhat-actions/podman-login@v1
         with:
@@ -49,6 +54,10 @@ jobs:
           context: ${{ env.REPO_CONTEXT }}
           containerfiles: |
             ${{ env.REPO_CONTAINERFILE }}
+          archs: |
+            ${{ env.IMAGE_ARCH }}
+          platforms: |
+            ${{ env.IMAGE_PLATFORM }}
       -
         name: Push
         id: push-base-to-ghcr
