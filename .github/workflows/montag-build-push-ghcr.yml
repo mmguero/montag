@@ -15,7 +15,7 @@ env:
   REPO_CONTAINERFILE: ./docker/Dockerfile
 
 jobs:
-  docker:
+  buildah:
     runs-on: ubuntu-latest
     permissions:
       actions: write
