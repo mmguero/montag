@@ -12,7 +12,6 @@ env:
   IMAGE_NAME: ghcr.io/${{ github.repository_owner }}/montag
   IMAGE_TAG: latest
   IMAGE_PLATFORM: linux/amd64
-  IMAGE_ARCH: amd64
   REPO_CONTEXT: .
   REPO_CONTAINERFILE: ./docker/Dockerfile
 
@@ -54,8 +53,6 @@ jobs:
           context: ${{ env.REPO_CONTEXT }}
           containerfiles: |
             ${{ env.REPO_CONTAINERFILE }}
-          archs: |
-            ${{ env.IMAGE_ARCH }}
           platforms: |
             ${{ env.IMAGE_PLATFORM }}
       -
