@@ -18,11 +18,13 @@ RUN echo "deb http://deb.debian.org/debian bullseye-backports main" >> /etc/apt/
     apt-get -y install -qq --no-install-recommends \
       ca-certificates \
       curl \
-      xvfb \
-      libmagic1 \
       imagemagick \
-      python3-magic \
+      libegl1 \
+      libmagic1 \
+      libopengl0 \
       python3-ebooklib \
+      python3-magic \
+      xvfb \
       xz-utils && \
     python3 -m ensurepip && \
       python3 -m pip install --no-cache /usr/local/src/montag-cleaner && \
