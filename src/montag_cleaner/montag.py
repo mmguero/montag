@@ -118,6 +118,7 @@ def RunMontag():
         if "epub" in bookMagic.lower():
             epubFileSpec = args.input
             wasEpub = True
+            toEpubExitCode = 0
         else:
             wasEpub = False
             epubFileSpec = os.path.join(tmpDirName, 'ebook.epub')

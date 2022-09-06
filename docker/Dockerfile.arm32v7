@@ -27,6 +27,7 @@ RUN apt-get update && \
       libtcl8.6 \
       libtk8.6 \
       libxft2 \
+      libxkbcommon0 \
       libxml2 \
       libxml2-dev \
       libxslt1-dev \
