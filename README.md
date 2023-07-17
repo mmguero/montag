@@ -1,6 +1,6 @@
 # Montag
 
-[![Latest Version](https://img.shields.io/pypi/v/montag-cleaner)](https://pypi.python.org/pypi/montag-cleaner/) [![Docker Image](https://github.com/mmguero/montag/workflows/montag-build-push-ghcr/badge.svg)](https://github.com/mmguero/montag/pkgs/container/montag) [![Docker Image (arm32v7)](https://github.com/mmguero/montag/workflows/montag-build-push-arm32v7-ghcr/badge.svg)](https://github.com/mmguero/montag/pkgs/container/montag)
+[![Latest Version](https://img.shields.io/pypi/v/montag-cleaner)](https://pypi.python.org/pypi/montag-cleaner/) [![Docker Image](https://github.com/mmguero/montag/workflows/montag-build-push-ghcr/badge.svg)](https://github.com/mmguero/montag/pkgs/container/montag)
 
 *"Didn't firemen prevent fires rather than stoke them up and get them going?"*
 
