@@ -22,6 +22,7 @@ RUN echo "deb http://deb.debian.org/debian bullseye-backports main" >> /etc/apt/
       libegl1 \
       libmagic1 \
       libopengl0 \
+      libxcb-cursor0 \
       libxkbcommon0 \
       python3-ebooklib \
       python3-magic \
