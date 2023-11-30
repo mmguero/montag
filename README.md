@@ -50,7 +50,7 @@ The Python dependencies *should* be installed automatically if you are using `pi
 
 ### Docker
 
-Alternately, a [Dockerfile](./docker/Dockerfile) is provided to allow you to run Montag in Docker. You can build the `ghcr.io/mmguero/montag:latest` Docker image with [`build_docker.sh`](./docker/build_docker.sh), then use [`montag-docker.sh`](./docker/montag-docker.sh) to process your e-book files.
+Alternately, a [Dockerfile](./docker/Dockerfile) is provided to allow you to run Montag in Docker. You can build the `oci.guero.top/montag:latest` Docker image with [`build_docker.sh`](./docker/build_docker.sh), then use [`montag-docker.sh`](./docker/montag-docker.sh) to process your e-book files.
 
 ## Usage
 

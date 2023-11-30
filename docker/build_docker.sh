@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-IMAGE="${MONTAG_IMAGE:-ghcr.io/mmguero/montag:latest}"
+IMAGE="${MONTAG_IMAGE:-oci.guero.top/montag:latest}"
 ENGINE="${CONTAINER_ENGINE:-docker}"
 
 set -e
