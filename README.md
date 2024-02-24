@@ -10,8 +10,8 @@ There are all sorts of arguments to be had about obscenity filters, censorship, 
 
 **montag** is part of a family of projects with similar goals:
 
-* 📼 [cleanvid](https://github.com/mmguero/cleanvid) for video files
-* 🎤 [monkeyplug](https://github.com/mmguero/monkeyplug) for audio files
+* 📼 [cleanvid](https://github.com/mmguero/cleanvid) for video files (using [SRT-formatted](https://en.wikipedia.org/wiki/SubRip#Format) subtitles)
+* 🎤 [monkeyplug](https://github.com/mmguero/monkeyplug) for audio and video files (using either [Whisper](https://openai.com/research/whisper) or the [Vosk](https://alphacephei.com/vosk/)-[API](https://github.com/alphacep/vosk-api) for speech recognition)
 * 📕 [montag](https://github.com/mmguero/montag) for ebooks
 
 ## Installation
