@@ -1,4 +1,4 @@
-FROM python:3-slim-bullseye
+FROM python:3-slim-bookworm
 
 LABEL maintainer="mero.mero.guero@gmail.com"
 LABEL org.opencontainers.image.authors='mero.mero.guero@gmail.com'
@@ -10,11 +10,11 @@ LABEL org.opencontainers.image.description='Containerized E-Book Profanity Scrub
 ENV DEBIAN_FRONTEND noninteractive
 ENV TERM xterm
 ENV PYTHONUNBUFFERED 1
+ENV PIP_ROOT_USER_ACTION ignore
 
 ADD . /usr/local/src/montag-cleaner
 
-RUN echo "deb http://deb.debian.org/debian bullseye-backports main" >> /etc/apt/sources.list && \
-    apt-get update -q && \
+RUN apt-get update -q && \
     apt-get -y install -qq --no-install-recommends \
       ca-certificates \
       curl \
